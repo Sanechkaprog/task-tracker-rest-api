@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.time.LocalDate;
 
@@ -14,6 +15,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Entity
 @Table(name="tasks")
+@ToString
 public class Task {
     @Id
     @Column(name="task_id")
@@ -26,7 +28,7 @@ public class Task {
     @ManyToOne()
     @JoinColumn(name="user_id")
     @JsonBackReference
-    private User userId;
+    private User user;
 
     @Column(name = "created_at")
     private LocalDate createdAt;
