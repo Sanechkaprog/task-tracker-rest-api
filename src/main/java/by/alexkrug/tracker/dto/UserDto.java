@@ -8,4 +8,7 @@ public record UserDto (
         String surname,
         LocalDate registeredAt
 ) {
+    public UserDto(String name, String surname) {
+        this(null, name, surname, null);
+    }
 }
