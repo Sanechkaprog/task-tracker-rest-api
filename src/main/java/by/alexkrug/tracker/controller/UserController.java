@@ -49,7 +49,7 @@ public class UserController {
     @PostMapping("/users")
     public ResponseEntity<HttpStatus> createUser(@RequestBody UserDto userDto) {
         userService.saveUser(userDto);
-        return ResponseEntity.ok(HttpStatus.OK);
+        return ResponseEntity.ok(HttpStatus.CREATED);
     }
 
     @PatchMapping("/users/{id}")
@@ -66,8 +66,8 @@ public class UserController {
 
     @GetMapping("/users/{id}/tasks")
     public List<Task> getTasks(@PathVariable("id") Long id) {
+
         return userService.getTasks(id);
     }
-
 
 }
