@@ -1,7 +1,7 @@
 package by.alexkrug.tracker.controller;
 
-
 import by.alexkrug.tracker.dto.UserDto;
+import by.alexkrug.tracker.entity.Task;
 import by.alexkrug.tracker.service.UserService;
 import by.alexkrug.tracker.utils.UserNotFound;
 import by.alexkrug.tracker.utils.exceptions.UserNotFoundException;
@@ -50,6 +50,23 @@ public class UserController {
     public ResponseEntity<HttpStatus> createUser(@RequestBody UserDto userDto) {
         userService.saveUser(userDto);
         return ResponseEntity.ok(HttpStatus.OK);
+    }
+
+    @PatchMapping("/users/{id}")
+    public ResponseEntity<HttpStatus> updateUser(@RequestBody UserDto userDto, @PathVariable("id") Long id) {
+        userService.updateUser(userDto, id);
+        return ResponseEntity.ok(HttpStatus.OK);
+    }
+
+    @DeleteMapping("/users/{id}")
+    public ResponseEntity<HttpStatus> deleteUser(@PathVariable("id") Long id) {
+        userService.deleteUser(id);
+        return ResponseEntity.ok(HttpStatus.OK);
+    }
+
+    @GetMapping("/users/{id}/tasks")
+    public List<Task> getTasks(@PathVariable("id") Long id) {
+        return userService.getTasks(id);
     }
 
 

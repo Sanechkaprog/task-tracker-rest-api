@@ -1,6 +1,7 @@
 package by.alexkrug.tracker.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,6 +25,7 @@ public class Task {
 
     @ManyToOne()
     @JoinColumn(name="user_id")
+    @JsonBackReference
     private User userId;
 
     @Column(name = "created_at")

@@ -2,9 +2,11 @@ package by.alexkrug.tracker.service;
 
 
 import by.alexkrug.tracker.dto.UserDto;
+import by.alexkrug.tracker.entity.Task;
 import by.alexkrug.tracker.entity.User;
 import by.alexkrug.tracker.repository.UserRepository;
 import by.alexkrug.tracker.utils.exceptions.UserNotFoundException;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@Transactional()
 public class UserService {
     private final UserRepository userRepository;
 
@@ -37,6 +40,30 @@ public class UserService {
 
     public void saveUser(UserDto userDto) {
         userRepository.save(toUser(userDto));
+    }
+
+    public void updateUser(UserDto userDto, Long id) {
+        Optional<User> optionalUser = userRepository.findById(id);
+        if (optionalUser.isEmpty()) {
+            throw new UserNotFoundException();
+        }
+        User user = optionalUser.get();
+        user.setName(userDto.name());
+        user.setSurname(userDto.surname());
+    }
+
+    public void deleteUser(Long id) {
+        userRepository.deleteById(id);
+    }
+
+    public List<Task> getTasks(Long id) {
+        Optional<User> optionalUser = userRepository.findById(id);
+        if (optionalUser.isEmpty()) {
+            throw new UserNotFoundException();
+        }
+        User user = optionalUser.get();
+        return user.getTasks();
+
     }
 
     private UserDto userToDto(User user) {
