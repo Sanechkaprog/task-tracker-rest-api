@@ -7,7 +7,7 @@ import by.alexkrug.tracker.entity.Task;
 import by.alexkrug.tracker.entity.User;
 import by.alexkrug.tracker.repository.TaskRepository;
 import by.alexkrug.tracker.repository.UserRepository;
-import by.alexkrug.tracker.utils.TaskStatus;
+import by.alexkrug.tracker.utils.enums.TaskStatus;
 import by.alexkrug.tracker.utils.exceptions.TaskNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
@@ -79,8 +79,13 @@ public class TaskService {
         );
     }
 
-    public void deleteUser(Long id) {
-        taskRepository.deleteById(id);
+    public void deleteTask(Long id) {
+        Optional<Task> taskOptional = taskRepository.findById(id);
+        if (taskOptional.isEmpty()) {
+            throw new TaskNotFoundException();
+        }
+        Task task = taskOptional.get();
+        taskRepository.delete(task);
     }
 
 

@@ -5,6 +5,7 @@ import by.alexkrug.tracker.entity.Task;
 import by.alexkrug.tracker.service.UserService;
 import by.alexkrug.tracker.utils.UserNotFound;
 import by.alexkrug.tracker.utils.exceptions.UserNotFoundException;
+import jakarta.validation.Valid;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,13 +48,13 @@ public class UserController {
     }
 
     @PostMapping("/users")
-    public ResponseEntity<HttpStatus> createUser(@RequestBody UserDto userDto) {
+    public ResponseEntity<HttpStatus> createUser(@Valid @RequestBody UserDto userDto) {
         userService.saveUser(userDto);
         return ResponseEntity.ok(HttpStatus.CREATED);
     }
 
     @PatchMapping("/users/{id}")
-    public ResponseEntity<HttpStatus> updateUser(@RequestBody UserDto userDto, @PathVariable("id") Long id) {
+    public ResponseEntity<HttpStatus> updateUser(@Valid @RequestBody UserDto userDto, @PathVariable("id") Long id) {
         userService.updateUser(userDto, id);
         return ResponseEntity.ok(HttpStatus.OK);
     }
@@ -66,7 +67,6 @@ public class UserController {
 
     @GetMapping("/users/{id}/tasks")
     public List<Task> getTasks(@PathVariable("id") Long id) {
-
         return userService.getTasks(id);
     }
 

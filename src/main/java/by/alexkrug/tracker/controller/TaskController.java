@@ -3,18 +3,21 @@ package by.alexkrug.tracker.controller;
 
 import by.alexkrug.tracker.dto.TaskDto;
 import by.alexkrug.tracker.dto.UserDto;
-import by.alexkrug.tracker.entity.User;
 import by.alexkrug.tracker.service.TaskService;
 import by.alexkrug.tracker.utils.TaskNotFound;
 import by.alexkrug.tracker.utils.exceptions.TaskNotFoundException;
-import by.alexkrug.tracker.utils.exceptions.UserNotFoundException;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -37,13 +40,13 @@ public class TaskController {
     }
 
     @PostMapping("/tasks")
-    public ResponseEntity<HttpStatus> createTask(@RequestBody TaskDto taskDto) {
+    public ResponseEntity<HttpStatus> createTask(@Valid @RequestBody TaskDto taskDto) {
         taskService.createTask(taskDto);
-        return ResponseEntity.ok(HttpStatus.CREATED);
+        return ResponseEntity.ok(HttpStatus.OK);
     }
 
     @PatchMapping("/tasks/{id}")
-    public ResponseEntity<HttpStatus> updateTask(@RequestBody TaskDto taskDto, @PathVariable("id") Long id) {
+    public ResponseEntity<HttpStatus> updateTask(@Valid @RequestBody TaskDto taskDto, @PathVariable("id") Long id) {
         taskService.updateTask(taskDto, id);
         return ResponseEntity.ok(HttpStatus.OK);
     }
@@ -55,7 +58,7 @@ public class TaskController {
 
     @DeleteMapping("/tasks/{id}")
     public ResponseEntity<HttpStatus> deleteTask(@PathVariable Long id) {
-        taskService.deleteUser(id);
+        taskService.deleteTask(id);
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
